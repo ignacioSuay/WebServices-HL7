@@ -2,22 +2,16 @@ package com.hl7integration.ws.Server;
 
 import javax.xml.ws.Endpoint;
 
-/**
- * Created with IntelliJ IDEA.
- * User: suay
- * Date: 10/10/13
- * Time: 1:23 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class Server {
 
     protected Server() throws Exception {
-        // START SNIPPET: publish
+
         System.out.println("Starting Server");
-        HelloWorld implementor = new HelloWorld();
-        String address = "http://localhost:9999/helloWorld";
+        PatientServiceImpl implementor = new PatientServiceImpl();
+        String address = "http://localhost:9999/patientService";
         Endpoint.publish(address, implementor);
-        // END SNIPPET: publish
+
     }
 
     public static void main(String args[]) throws Exception {

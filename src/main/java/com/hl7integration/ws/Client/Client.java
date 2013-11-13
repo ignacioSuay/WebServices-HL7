@@ -1,38 +1,31 @@
 package com.hl7integration.ws.Client;
 
-import com.hl7integration.ws.Server.HelloWorld;
-import com.hl7integration.ws.Server.IHelloWorld;
+import com.hl7integration.ws.Server.PatientService;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import javax.xml.ws.soap.SOAPBinding;
 
-/**
- * Created with IntelliJ IDEA.
- * User: suay
- * Date: 10/10/13
- * Time: 1:26 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class Client {
-
-    private static final QName SERVICE_NAME
-            = new QName("http://com.hl7integration.ws.Server/", "IHelloWorld");
-    private static final QName PORT_NAME
-            = new QName("http://com.hl7integration.ws.Server/", "IHelloWorldPort");
-
-
-    private Client() {
-    }
 
     public static void main(String args[]) throws Exception {
 
         JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
-        factory.setServiceClass(IHelloWorld.class);
-        factory.setAddress("http://localhost:9999/helloWorld");
-        IHelloWorld hw = (IHelloWorld) factory.create();
-        System.out.println(hw.sayHi("World"));
+        factory.setServiceClass(PatientService.class);
+        factory.setAddress("http://localhost:9999/patientService");
+        PatientService ps = (PatientService) factory.create();
+
+        String message = "MSH|^~\\&|hl7Integration|hl7Integration|||||ADT^A31|||2.5|\r" +
+                "EVN|A31|20130617154644\r" +
+                "PID|1|46530651||407623|Wood^Patrick^^^MR||19700101|1|||High Street^^Oxford|";
+
+        //Call the service to register a patient
+        ps.registerPatient(message);
+
+        //Get the patient by nhs number
+        System.out.println("Patient Surname is: " + ps.getPatientSurnameByNHSNumber(46530651));
 
 
     }
